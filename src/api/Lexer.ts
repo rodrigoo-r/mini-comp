@@ -32,8 +32,27 @@ export default class Lexer {
     private current: string = "";
     private col: number = 1;
 
+    private isNumber = false;
+
     private flush(res: Token[]) {
         if (this.current.length == 0) return;
+        
+        if (this.isNumber) {
+            res.push(
+                new Token(
+                    TokenType.NumberLiteral, 
+                    this.current,
+                    this.col,
+                    this.col + this.current.length
+                )
+            );
+
+            this.col += this.current.length + 1;
+            this.current = "";
+            this.isNumber = false;
+            return;
+        }
+
         const token = tokenMap[this.current];
         
         if (token !== undefined) {
@@ -67,6 +86,50 @@ export default class Lexer {
 
         for (let i = 0; i < input.length; i++) {
             const char = input[i];
+
+            if (char == '"') {
+                this.flush(tokens);
+                let str = "";
+                i++;
+
+                while (i < input.length && input[i] !== '"') {
+                    str += input[i];
+                    i++;
+                }
+
+                if (i >= input.length) {
+                    throw new Error("Unterminated string literal");
+                }
+
+                tokens.push(
+                    new Token(
+                        TokenType.StringLiteral, 
+                        str, 
+                        this.col, 
+                        this.col + str.length
+                    )
+                );
+
+                this.col += str.length + 2; // +2 for the quotes
+                continue;
+            }
+
+            if (
+                char >= '0' && char <= '9' && 
+                (this.current.length === 0 || this.isNumber)
+            ) {
+                this.current += char;
+                this.isNumber = true;
+                continue;
+            } else if (this.isNumber) {
+                this.flush(tokens);
+                this.isNumber = false;
+            }
+
+            if (char == "." && this.isNumber) {
+                this.current += char;
+                continue;
+            }
 
             if (
                 (char === '-' && input[i + 1] === '>') ||

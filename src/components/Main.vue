@@ -20,6 +20,7 @@ const loading = ref(false)
 const lexer = new Lexer()
 const parser = new Parser()
 const tokens = ref(lexer.lex(inputText.value));
+    console.log(tokens.value)
 const ast = ref(parser.parse(tokens.value));
 
 // @ts-ignore

@@ -7,6 +7,9 @@ enum TokenType {
 
     Identifier,
 
+    StringLiteral,
+    NumberLiteral,
+
     LeftParen,
     LeftBrace,
     RightParen,
@@ -76,6 +79,9 @@ export function tokenTypeToString(type: TokenType): string {
         case TokenType.Minus: return "Minus";
         case TokenType.Multiply: return "Multiply";
         case TokenType.Divide: return "Divide";
+
+        case TokenType.StringLiteral: return "StringLiteral";
+        case TokenType.NumberLiteral: return "NumberLiteral";
     }
 }
 
@@ -87,8 +93,11 @@ export function getTokenClass(type: TokenType): string {
         case TokenType.Such: 
             return "token-keyword";
 
-        case TokenType.Identifier: return "token-identifier";
+        case TokenType.StringLiteral:
+        case TokenType.Identifier: 
+            return "token-identifier";
         
+        case TokenType.NumberLiteral:
         case TokenType.LeftBrace:
         case TokenType.RightBrace:
         case TokenType.Comma:

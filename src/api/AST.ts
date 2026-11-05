@@ -15,6 +15,10 @@ enum ASTRule {
     PropAccess,
 
     Expression,
+    
+    StringLiteral,
+    NumberLiteral,
+
     LessThan,
     GreaterThan,
     LessThanOrEqual,
@@ -67,6 +71,9 @@ export function astRuleToString(rule: ASTRule): string {
         case ASTRule.Subtract: return "Subtract";
         case ASTRule.Multiply: return "Multiply";
         case ASTRule.Divide: return "Divide";
+
+        case ASTRule.StringLiteral: return "StringLiteral";
+        case ASTRule.NumberLiteral: return "NumberLiteral";
 
         default: return "Unknown";
     }

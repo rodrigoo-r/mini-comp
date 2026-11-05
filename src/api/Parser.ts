@@ -36,6 +36,9 @@ export default class Parser {
             while (tokens.hasNext()) {
                 const next = tokens.next()!;
                 if (next.type == TokenType.RightBrace) break;
+                if (next.type !== TokenType.Identifier) {
+                    throw new Error(`Expected identifier for entity property, but got ${TokenType[next.type]}`);
+                }
 
                 const propertyNode = new AST(ASTRule.EntityProperty, next.value);
                 entityNode.children.push(propertyNode);
@@ -73,8 +76,32 @@ export default class Parser {
     private parseExpression(tokens: Stream<Token>): AST {
         const statementNode = new AST(ASTRule.Expression);
         
-        const candidateToken = this.expect(tokens, TokenType.Identifier);
+        const candidateToken = tokens.next()!;
+        if (
+            !candidateToken || 
+            (
+                candidateToken.type !== TokenType.Identifier &&
+                candidateToken.type !== TokenType.NumberLiteral &&
+                candidateToken.type !== TokenType.StringLiteral
+            )
+        ) {
+            throw new Error(`Expected identifier, number literal, or string literal, but got ${candidateToken ? TokenType[candidateToken.type] : "null"}`);
+        }
+
         let candidate = new AST(ASTRule.Identifier, candidateToken.value);
+        switch (candidateToken.type) {
+            case TokenType.Identifier:
+                candidate.rule = ASTRule.Identifier;
+                break;
+            case TokenType.NumberLiteral:
+                candidate.rule = ASTRule.NumberLiteral;
+                break;
+            case TokenType.StringLiteral:
+                candidate.rule = ASTRule.StringLiteral;
+                break;
+        }
+
+        if (candidate.rule !== ASTRule.Identifier) return candidate;
 
         if (tokens.hasNext()) {
             let nextToken = tokens.peek()!;
