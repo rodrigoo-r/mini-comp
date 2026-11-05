@@ -29,7 +29,6 @@ enum TokenType {
     Minus,
     Multiply,
     Divide,
-
 };
 
 export default class Token {

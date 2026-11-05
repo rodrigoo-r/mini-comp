@@ -30,7 +30,7 @@ export default function TokenTypeToRegex(tokenType: TokenType): RegExp {
         case TokenType.Divide: return /\//;
 
         case TokenType.StringLiteral: return /"(?:[^"\\]|\\.)*"/;
-        case TokenType.NumberLiteral: return /[0-9]+/;
+        case TokenType.NumberLiteral: return /[0-9]+(\.[0-9]+)?/;
 
         default:
             throw new Error(`No regex defined for token type ${TokenType[tokenType]}`);
