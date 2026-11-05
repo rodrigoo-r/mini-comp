@@ -241,6 +241,11 @@ export default class Parser {
             conclusionNode.children.push(res.children.pop()!);
         }
         
+        if (tokens.hasNext()) {
+            const next = tokens.next()!;
+            throw new Error(`Unexpected token ${TokenType[next.type]} after conclusion`);
+        }
+        
         return conclusionNode;
     }
 
