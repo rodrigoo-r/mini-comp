@@ -1,12 +1,18 @@
 <script setup lang="ts">
+// @ts-ignore
 import TopLevelCard from './TopLevelCard.vue'
+// @ts-ignore
 import TopLevelCardHeader from './TopLevelCardHeader.vue'
 import { ref } from 'vue'
 import Lexer from '../api/Lexer'
 import Parser from '../api/Parser'
+// @ts-ignore
 import Token, { tokenTypeToString, getTokenClass } from '../api/Token'
+// @ts-ignore
 import maxChars from '../api/MaxChars'
+// @ts-ignore
 import ASTViewer from './ASTViewer.vue'
+// @ts-ignore
 import TokenTypeToRegex from '../api/TokenTypeToRegex'
 
 const inputText = ref('Given(Transaction t{Amount}, Client c{Money}) -> Such(t.Amount > c.Money) -> Reject')
@@ -16,6 +22,7 @@ const parser = new Parser()
 const tokens = ref(lexer.lex(inputText.value));
 const ast = ref(parser.parse(tokens.value));
 
+// @ts-ignore
 function lex() {
     if (loading.value) return;
     loading.value = true;

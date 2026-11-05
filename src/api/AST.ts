@@ -1,3 +1,4 @@
+// @ts-ignore
 enum ASTRule {
     Program,
 

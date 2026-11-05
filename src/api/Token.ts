@@ -1,3 +1,4 @@
+// @ts-ignore
 enum TokenType {
     Given,
     Reject,

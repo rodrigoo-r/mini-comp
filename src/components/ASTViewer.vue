@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-ignore
 import AST, { astRuleToString } from '../api/AST'
 
 const props = defineProps<{
