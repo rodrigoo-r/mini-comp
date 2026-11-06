@@ -20,7 +20,6 @@ const loading = ref(false)
 const lexer = new Lexer()
 const parser = new Parser()
 const tokens = ref(lexer.lex(inputText.value));
-    console.log(tokens.value)
 const ast = ref(parser.parse(tokens.value));
 
 // @ts-ignore
@@ -28,9 +27,15 @@ function lex() {
     if (loading.value) return;
     loading.value = true;
 
-    tokens.value = lexer.lex(inputText.value);
-    ast.value = parser.parse(tokens.value);
-    loading.value = false;
+    try {
+        tokens.value = lexer.lex(inputText.value);
+        ast.value = parser.parse(tokens.value);
+        loading.value = false;
+    } catch (error) {
+        // @ts-ignore
+        alert('Error: ' + error.message);
+        loading.value = false;
+    }
 }
 </script>
 
